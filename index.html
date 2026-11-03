@@ -258,6 +258,9 @@ body.touch #comms{top:auto;bottom:calc(160px + env(safe-area-inset-bottom,0px))}
 }
 @media (prefers-reduced-motion: reduce){ #call,#banner{transition:none} }
 </style>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="f5-cloud.js"></script>
 </head>
 <body>
 <div id="wrap">
@@ -2017,7 +2020,7 @@ async function clubInit(){
   const use=window.claude&&window.claude.use;
   if(use){CLUB.db=await use('db');const u=await use('user');CLUB.uid=u?await u.id():null;}
  }catch(e){}
- if(!CLUB.db||!CLUB.uid){CLUB.err='Clubs are shared through this artifact, so they work when you open it on claude.ai while signed in.';CLUB.ready=true;clubRender();return;}
+ if(!CLUB.db||!CLUB.uid){CLUB.err='Clubs need the online service. Open the game on claude.ai while signed in, or set up Supabase for this site.';CLUB.ready=true;clubRender();return;}
  let got=0;const timer=setTimeout(()=>{if(got<2){CLUB.err='Club data can\u2019t be reached yet. It will appear when the connection returns.';clubRender();}},10000);
  const ok=()=>{got++;if(got>=2){clearTimeout(timer);CLUB.err='';CLUB.ready=true;}clubRender();menuRefreshTeams();};
  let c1=false,c2=false;
@@ -2376,7 +2379,7 @@ function lgRender(full){
  if(typing()&&!full){const live=$('#lgLive');if(live){live.innerHTML=lgLiveHTML();lgBind();}return;}
  const c=$('#leagueCard');
  let h='<div class="clubHead"><img src="'+GP_FULL+'" alt="GoodPlay Sports" class="gpChip"><button type="button" class="back" id="lgBack">'+(LG.view==='list'?'Back to menu':'All leagues')+'</button></div>';
- if(!CLUB.db&&(CLUB.ready||CLUB.err)){c.innerHTML=h+'<h2>Leagues</h2><p class="lede">Leagues are shared through this artifact, so they work when you open it on claude.ai while signed in.</p>';lgBindHead();return;}
+ if(!CLUB.db&&(CLUB.ready||CLUB.err)){c.innerHTML=h+'<h2>Leagues</h2><p class="lede">Leagues need the online service. Open the game on claude.ai while signed in, or set up Supabase for this site.</p>';lgBindHead();return;}
  if(LG.view==='create'){
   const d=LG.draft||(LG.draft={name:'',halfLen:5,double:false,playoffs:true});
   h+='<h2>Create a league</h2><p class="lede">You\u2019ll be the commissioner: you add clubs, set fixtures and confirm results. Each person can run one league.</p>'+
